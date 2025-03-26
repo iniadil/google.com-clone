@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Google</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        background-color: #fff;
+      }
+      header {
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+        padding: 10px 20px;
+        box-sizing: border-box;
+      }
+      header .profile {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        object-fit: cover;
+        cursor: pointer;
+      }
+      .container {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+      }
+      .logo {
+        margin-bottom: 20px;
+      }
+      .logo img {
+        width: 272px;
+        height: auto;
+      }
+      .search-container {
+        width: 100%;
+        max-width: 584px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+      }
+      .search-input-wrapper {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        border: 1px solid #dfe1e5;
+        box-shadow: none;
+        border-radius: 24px;
+        height: 46px;
+        padding: 0 14px;
+        transition: box-shadow 0.3s;
+      }
+      .search-input-wrapper:hover,
+      .search-input-wrapper:focus-within {
+        box-shadow: 0 1px 6px rgba(32, 33, 36, 0.28);
+        border-color: rgba(223, 225, 229, 0);
+      }
+      .search-box {
+        flex-grow: 1;
+        border: none;
+        box-shadow: none;
+        border-radius: 0;
+        height: 44px;
+        padding: 0;
+        font-size: 16px;
+        color: #202124;
+        outline: none;
+        background: transparent;
+      }
+      .search-button {
+        background: none;
+        border: none;
+        padding: 0 10px 0 5px;
+        margin: 0;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+      }
+      .search-button svg {
+        width: 24px;
+        height: 24px;
+        fill: #4285f4;
+      }
+      .buttons {
+        margin-top: 30px;
+        display: flex;
+        gap: 10px;
+      }
+      .buttons input {
+        background-color: #f8f9fa;
+        border: 1px solid #f8f9fa;
+        border-radius: 4px;
+        padding: 10px 20px;
+        font-size: 14px;
+        cursor: pointer;
+        color: #3c4043;
+      }
+      .buttons input:hover {
+        border: 1px solid #c6c6c6;
+        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+      }
+      .loader {
+        border: 4px solid #f3f3f3;
+        border-top: 4px solid #3498db;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        animation: spin 1s linear infinite;
+        position: absolute;
+        top: 110px;
+        display: none;
+      }
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+      .description-area {
+        margin-top: 70px;
+        font-size: 14px;
+        color: #202124;
+        width: 100%;
+        max-width: 600px;
+        text-align: left;
+        display: none;
+        padding: 10px;
+        border-top: 1px solid #ebebeb;
+      }
+      .description-area h1,
+      .description-area h2,
+      .description-area h3 {
+        color: #1a0dab;
+        margin: 15px 0 10px 0;
+      }
+      .description-area h1 {
+        font-size: 20px;
+      }
+      .description-area h2 {
+        font-size: 18px;
+      }
+      .description-area h3 {
+        font-size: 16px;
+      }
+      .description-area p {
+        margin: 10px 0;
+        line-height: 1.5;
+      }
+      .description-area ul,
+      .description-area ol {
+        margin: 10px 0;
+        padding-left: 20px;
+      }
+      .description-area li {
+        margin-bottom: 5px;
+      }
+      .description-area code {
+        background-color: #f8f9fa;
+        padding: 2px 4px;
+        border-radius: 3px;
+        font-family: monospace;
+      }
+      .description-area pre {
+        background-color: #f8f9fa;
+        padding: 10px;
+        border-radius: 5px;
+        overflow-x: auto;
+      }
+      .description-area blockquote {
+        border-left: 3px solid #dfe1e5;
+        padding-left: 15px;
+        margin: 10px 0;
+        color: #70757a;
+      }
+      .description-area a {
+        color: #1a0dab;
+        text-decoration: none;
+      }
+      .description-area a:hover {
+        text-decoration: underline;
+      }
+      footer {
+        width: 100%;
+        background-color: #f2f2f2;
+        padding: 15px 0;
+        text-align: center;
+        font-size: 12px;
+        color: #70757a;
+        margin-top: auto;
+      }
+      footer .footer-inner {
+        max-width: 584px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      footer .footer-links {
+        list-style: none;
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin: 0;
+        padding: 0;
+      }
+      footer .footer-links li a {
+        color: #70757a;
+        text-decoration: none;
+      }
+      footer .footer-links li a:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <img class="profile" src="https://picsum.photos/500" alt="Profile" />
+    </header>
+    <div class="container">
+      <div class="logo">
+        <img
+          src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png"
+          alt="Google"
+        />
+      </div>
+      <div class="search-container">
+        <div class="search-input-wrapper">
+          <input
+            type="text"
+            class="search-box"
+            placeholder="Search Google or type a URL"
+            id="search-box"
+          />
+          <button class="search-button" id="search-button">
+            <svg
+              focusable="false"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+              ></path>
+            </svg>
+          </button>
+        </div>
+        <div class="buttons">
+          <input type="button" value="Google Search" id="google-search-btn" />
+          <input type="button" value="I'm Feeling Lucky" />
+        </div>
+        <div class="loader" id="loader"></div>
+      </div>
+      <div class="description-area" id="description-area"></div>
+    </div>
+    <footer>
+      <div class="footer-inner">
+        <div>Country: United States</div>
+        <ul class="footer-links">
+          <li><a href="#">About</a></li>
+          <li><a href="#">Advertising</a></li>
+          <li><a href="#">Business</a></li>
+          <li><a href="#">Privacy</a></li>
+          <li><a href="#">Terms</a></li>
+        </ul>
+      </div>
+    </footer>
+    <!-- Load configuration first -->
+    <script src="config.js"></script>
+    <script>
+      const searchBox = document.getElementById("search-box");
+      const searchButton = document.getElementById("search-button");
+      const googleSearchBtn = document.getElementById("google-search-btn");
+      const loader = document.getElementById("loader");
+      const descriptionArea = document.getElementById("description-area");
+
+      const feelingLuckyBtn = document.querySelector(
+        '.buttons input[value="I\'m Feeling Lucky"]'
+      );
+
+      function setSearchEnabled(enabled) {
+        searchBox.disabled = !enabled;
+        searchButton.disabled = !enabled;
+        googleSearchBtn.disabled = !enabled;
+        feelingLuckyBtn.disabled = !enabled;
+
+        if (enabled) {
+          searchButton.style.cursor = "pointer";
+          searchButton.querySelector("svg").style.fill = "#4285f4";
+        } else {
+          searchButton.style.cursor = "not-allowed";
+          searchButton.querySelector("svg").style.fill = "#9aa0a6";
+        }
+      }
+
+      function triggerSearch() {
+        const query = searchBox.value.trim();
+        if (query && !searchButton.disabled) {
+          console.log("Search:", query);
+          loader.style.display = "block";
+          descriptionArea.style.display = "none";
+          descriptionArea.innerHTML = "";
+          setSearchEnabled(false);
+
+          searchNow(query)
+            .then((answer) => {
+              console.log("Answer:", answer);
+              descriptionArea.style.display = "block";
+              // Convert markdown to HTML
+              const html = markdownToHtml(answer);
+              descriptionArea.innerHTML = html;
+            })
+            .catch((error) => {
+              console.error("Search failed:", error);
+              descriptionArea.style.display = "block";
+              descriptionArea.innerHTML = `<p style="color: red;">Search failed. Please try again.</p>`;
+            })
+            .finally(() => {
+              loader.style.display = "none";
+            });
+        } else {
+          console.log("Search query is empty.");
+        }
+      }
+
+      // Basic markdown to HTML converter
+      function markdownToHtml(markdown) {
+        // Convert headers
+        let html = markdown
+          .replace(/^# (.*$)/gm, "<h1>$1</h1>")
+          .replace(/^## (.*$)/gm, "<h2>$1</h2>")
+          .replace(/^### (.*$)/gm, "<h3>$1</h3>")
+          // Convert bold and italic
+          .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
+          .replace(/\*(.*?)\*/g, "<em>$1</em>")
+          // Convert links
+          .replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2">$1</a>')
+          // Convert code blocks
+          .replace(/```([\s\S]*?)```/g, "<pre><code>$1</code></pre>")
+          .replace(/`(.*?)`/g, "<code>$1</code>")
+          // Convert blockquotes
+          .replace(/^> (.*$)/gm, "<blockquote>$1</blockquote>")
+          // Convert unordered lists
+          .replace(/^\* (.*$)/gm, "<li>$1</li>")
+          .replace(/<li>.*<\/li>/g, (match) => `<ul>${match}</ul>`)
+          // Convert ordered lists
+          .replace(/^\d\. (.*$)/gm, "<li>$1</li>")
+          .replace(/<li>.*<\/li>/g, (match) => `<ol>${match}</ol>`)
+          // Convert paragraphs (handle multiple newlines)
+          .replace(/([^\n])\n([^\n])/g, "$1<br>$2")
+          // Convert images
+          .replace(/!\[(.*?)\]\((.*?)\)/g, '<img src="$2" alt="$1">');
+
+        // Ensure proper line breaks
+        html = html.replace(/\n\n/g, "</p><p>");
+        html = html.replace(/<p><\/p>/g, "");
+
+        return `<div class="markdown-content">${html}</div>`;
+      }
+
+      searchBox.addEventListener("keyup", function (e) {
+        if (e.key === "Enter") {
+          triggerSearch();
+        }
+      });
+
+      searchButton.addEventListener("click", triggerSearch);
+      googleSearchBtn.addEventListener("click", triggerSearch);
+
+      async function searchNow(query) {
+        console.log("Searching now ...");
+        const apiKey = config.DEEPSEEK_API_KEY;
+        const apiUrl = "https://api.deepseek.com/chat/completions";
+
+        try {
+          const response = await fetch(apiUrl, {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${apiKey}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              model: "deepseek-chat",
+              messages: [
+                {
+                  role: "system",
+                  content:
+                    "You are a helpful search engine. Provide answers in markdown format with proper formatting for headers, lists, code blocks, and other markdown elements.",
+                },
+                { role: "user", content: query },
+              ],
+              stream: false,
+            }),
+          });
+
+          if (!response.ok) {
+            const errorData = await response.json().catch(() => ({}));
+            console.error("API Error Response:", errorData);
+            throw new Error(
+              `HTTP error! status: ${response.status} - ${response.statusText}`
+            );
+          }
+
+          const json = await response.json();
+          console.log("API Response JSON:", json);
+
+          if (
+            json.choices &&
+            json.choices.length > 0 &&
+            json.choices[0].message &&
+            json.choices[0].message.content
+          ) {
+            const answer = json.choices[0].message.content;
+            return answer;
+          } else {
+            console.error("Unexpected API response structure:", json);
+            throw new Error("Failed to parse search result from API response.");
+          }
+        } catch (error) {
+          console.error("Error during fetch operation:", error);
+          throw error;
+        }
+      }
+    </script>
+  </body>
+</html>
